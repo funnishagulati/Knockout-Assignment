@@ -1,0 +1,534 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>Basic From Creation</title>
+    <script src="./jquery-3.4.0.min.js" type="text/javascript"></script>
+    <script src="./knockout-3.5.0.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.4/knockout.validation.min.js"> </script> 
+   
+    <style>
+        table {
+            width:65%;
+            border-collapse: collapse;
+        }
+        .qualificationTable{
+            margin-left: 15%;
+            border :"3px solid grey" ;
+        
+        }
+        .qualificationTable .textBox{
+            width: 50px;
+            height: 30px;
+        }
+        .classTenth,.classTwelth{
+            text-transform: uppercase;
+            text-decoration: underline;
+        }
+        .termsNConds{
+            margin-bottom: 22px;
+            margin-top: 20px;
+        }
+        .labelUppercase{
+            text-transform: uppercase;
+            font-size:13px;
+        }
+        .examination, .marks{
+            margin-left: -6%;
+            margin-top: 13px;  
+        }
+        .localStorageTable, .localStorageColumn, .localStorageRow {
+            border: 1px solid black;
+        }
+        .btn-primary{
+            background-color: darkgrey;
+            line-height: 25px;
+            width: 15%;
+        }
+        th, td {
+            padding: 10px;
+        }
+        input[type=radio] { margin: 0 0.25em 0 0.25em }
+
+        #noRecordsToDisplayMsg{
+            color:red;text-transform: uppercase; 
+            letter-spacing: 3px;
+            font-family: sans-serif;
+            margin-top: 20px;
+            font-weight: 700;
+        }
+        
+        .customMessage{color:red;}
+        
+        .validationMessage {
+            display: inline-block;
+                color: Red;
+        }
+
+        .formHeading{
+            text-align: center; text-transform:uppercase;text-decoration: underline;
+        }
+        
+        .stateDropdown,.countryDropdown{width:35%;}
+    </style>
+   
+</head>
+<body>
+    <form id="registrationForm">
+        <div class="formHeading"><b>Student - Registration - Form </b></div>
+        <br>
+        <table> 
+            <tr>
+                <td class="labelUppercase"><b>First Name* :</b></td>
+                <td><input data-bind="value:FirstName" /></td>
+            </tr>
+            <tr>
+                <td class="labelUppercase"><b>Last Name* :</b></td>
+                <td>
+                    <input data-bind="value:LastName" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label labelUppercase"><b>Gender* :</b></td>
+                <td>
+                    <label><input type="radio" name="gender" value="Male" data-bind="checked: radioSelectedOptionValue" />Male</label>
+                    <label><input type="radio" name="gender" value="Female" data-bind="checked: radioSelectedOptionValue" />Female</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelUppercase" ><b>Date of Birth* :</b></td>
+                <td><select  id="date" data-bind="options: availableDates, value: selectedDate"></select>
+                    <select id="month" data-bind="options: availableMonths,value: selectedMonth"></select>
+                    <select id="year" data-bind="options: availableYears,value: selectedYear"></select>
+                </td>
+            </tr>
+            <tr>
+                <td  class="labelUppercase" ><b>Email* :</b></td>
+                <td>
+                    <input placeholder="Enter an email" data-bind="value:email" />
+                </td>
+            </tr>
+            <tr>
+                <td  class="labelUppercase"><b>Address* :</b></td>
+                <td>
+                    <input placeholder="Enter an address" data-bind="value: Address" />
+                </td>
+                
+            </tr>
+            <tr>
+                <td  class="labelUppercase"><b>City* :</b></td>
+                <td>
+                    <input placeholder="Enter city" data-bind="value: City" />
+                </td>
+                
+            </tr>
+            <tr>
+                <td  class="labelUppercase"><b>State* :</b></td>
+                <td><select class="stateDropdown" id="state" data-bind="value: selectedState,options: availableStates, optionsCaption: 'Select State'"></select>  
+                </td> 
+            </tr>
+            <tr>
+                <td  class="labelUppercase"><b>Country* :</b></td>
+                <td><select class="countryDropdown" id="country" data-bind="value: selectedCountry,options: availableCountry, optionsCaption: 'Select Country'"></select>  
+                </td> 
+            </tr>
+            <tr>
+                <td  class="labelUppercase"><b>Zipcode* :</b></td>
+                <td>
+                    <input placeholder="Enter pincode" data-bind="value: Zipcode" />
+                </td>
+                
+            </tr>
+            <tr>
+                <td  class="labelUppercase"><b>Hobbies* :</b></td>
+                <td>
+                    <input type="checkbox"  value="Drawing" data-bind="checked:hasHobbies" /> Drawing
+                    <input type="checkbox" value="Singing" data-bind="checked:hasHobbies"/> Singing
+                    <input type="checkbox" value="Dancing" data-bind="checked:hasHobbies"/> Dancing
+                    <input type="checkbox" value="others" data-bind="checked:hasHobbies"/> Others 
+                
+                </td>
+                <br>
+            </tr>
+            <tr>
+                <td class="label labelUppercase"><b>Courses Applied* :</b></td>
+                <td>
+                    <label><input type="radio" name="courseApplied" value="BCA" data-bind="checked: radioSelectedCourse" />BCA</label>
+                    <label><input type="radio" name="courseApplied" value="BSC" data-bind="checked: radioSelectedCourse" />BSC</label>
+                    <label><input type="radio" name="courseApplied" value="MCA" data-bind="checked: radioSelectedCourse" />MCA</label>
+                    <label><input type="radio" name="courseApplied" value="MSC" data-bind="checked: radioSelectedCourse" />MSC</label>
+                </td>
+            </tr>
+            
+             <tr>
+                <td class="labelUppercase"><b>Qualification* :</b></td>
+                <td><h4 text-align="center" class="examination">Examination </h4> </td>
+                <td><h4 text-align="center" class="marks">Marks </h4> </td>
+                    <table class="qualificationTable">
+                        <thead>
+                            <tr>
+                                <th class="classTenth">Class X</th>
+                                <th >English</th>
+                                    <td ><input data-bind="value: engScoreClassX" class="textBox" type="number" /></td> 
+                                <th >Hindi</th>
+                                    <td ><input  data-bind="value: hindiScoreClassX" class="textBox" type="number" /></td> 
+                                <th >Maths </th>
+                                    <td ><input  data-bind="value: mathsScoreClassX" class="textBox" type="number" /></td> 
+                                <th >Science </th>
+                                    <td ><input  data-bind="value: scienceScoreClassX" class="textBox" type="number" /></td> 
+                                <th >Social Science </th>
+                                <td ><input  data-bind="value: socialScoreClassX" class="textBox"type="number" /></td> 
+                            </tr>
+                            <tr>
+                                <th  class="classTwelth">Class XII</th>
+                                <th >English</th>
+                                    <td ><input data-bind="value: engScoreClassXII" class="textBox" type="number" /></td> 
+                                <th >Hindi</th>
+                                    <td ><input data-bind="value: hindiScoreClassXII" class="textBox" type="number" /></td> 
+                                <th >Maths </th>
+                                    <td ><input data-bind="value: mathsScoreClassXII" class="textBox" type="number" /></td> 
+                                <th >Science </th>
+                                    <td ><input data-bind="value: scienceScoreClassXII" class="textBox" type="number" /></td> 
+                                <th >Social Science </th>
+                                    <td ><input data-bind="value: socialScoreClassXII" class="textBox" type="number" /></td> 
+                            </tr>
+                        </thead>
+                    </table>
+                
+                </tr>
+                <tr>
+
+                </tr>
+           
+            <tr>
+                <td> <span></span><input class="termsNConds" type="checkbox" data-bind="checked:agreeToTermsAndCondFlag"/>I hereby agree all the information published is correct</span></td>
+            </tr>
+        </br>
+            <tr>
+                <td><button class="btn-primary" type="submit" data-bind="click :saveAndResetStudentData, enable : agreeToTermsAndCondFlag">
+                    Submit
+                </button> </td>
+                <td><button class="btn-primary" type="submit" data-bind="click :showRecords">
+                    Display Records
+                </button> </td>
+                <td><button class="btn-primary" type="submit" data-bind="click :resetRecords">
+                    Reset Records
+                </button></td>
+            </tr> 
+            
+        </table>  
+        <div id="noRecordsToDisplayMsg" >Sorry,There are not records to display.</div>
+
+        <!-- student details -->
+        <div class="displayRecords">
+            <h3>Display Records</h3>
+            <h3 data-bind = "text: 'Total Students: ' + students().length"></h3>
+            <table class="localStorageTable">
+                <thead class="thead-dark">
+                    <tr class="localStorageRow">
+                        <th class="localStorageColumn">First Name </th>
+                        <th class="localStorageColumn">Last Name </th>
+                        <th class="localStorageColumn">Gender </th>
+                        <th class="localStorageColumn">Email </th>
+                        <th class="localStorageColumn">City </th>
+                        <th class="localStorageColumn">State </th>
+                        <th class="localStorageColumn">Country </th>
+                        <th class="localStorageColumn">ZipCode </th>
+                        <th class="localStorageColumn">Courses Applied </th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: students">
+                    <tr class="localStorageRow">
+                        <td class="localStorageColumn"><span data-bind="text: FirstName"></span></td> <!-- we use TEXT property just to display the value --> 
+                        <td class="localStorageColumn"><span data-bind="text: LastName"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: radioSelectedOptionValue"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: email"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: City"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: selectedState"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: selectedCountry"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: Zipcode"></span></td>
+                        <td class="localStorageColumn"><span data-bind="text: radioSelectedCourse"></span></td>
+                        
+                        <td><a href="#" data-bind="click: editStudent">Edit</a></td>
+
+                        <td><a href="#" data-bind="click: deleteStudentRecord">Delete</a></td>
+                        
+                    </tr>   
+                </tbody>
+            </table>
+        </div><!-- student details end-->
+    </form>
+
+    <script type="text/javascript">
+
+        $('.displayRecords').hide();
+        $('#noRecordsToDisplayMsg').hide();
+
+        var viewstudentModel = function () {
+
+                var self=this;
+                var validateFirstName = ko.validatedObservable(self.FirstName);
+                self.FirstName = ko.observable('').extend({
+                    minLength:3,
+                    maxLength:15,
+                    required: true,
+                    pattern: {
+                        message: 'Firstname can only accept alphabets. Please enter a valid first name.',
+                        params: '^([A-Za-z])+$'
+                    }
+                });
+
+                self.LastName = ko.observable('').extend({ 
+                required: true,
+                    pattern: {
+                        message: 'LastName can only accept alphabets. Please enter a valid last name.',
+                        params: '^([A-Za-z])+$'
+                    }
+                });
+
+                self.selectedDate = ko.observable(),
+                self.selectedMonth = ko.observable(),
+                self.selectedYear = ko.observable(),
+                
+                self.email = ko.observable('').extend({ // custom message
+                    required: {
+                        message: 'Email address cannot be blank. Please enter a valid email address..'
+                    }, 
+                    email:true,
+                });
+
+                self.Address = ko.observable('').extend({ required:true}),
+                self.City = ko.observable('').extend({ required:true}),
+                
+                self.Zipcode = ko.observable('').extend({ 
+                required: true,
+                    maxLength:5,
+                    pattern: {
+                        message: 'ZipCode can only accept numbers. Please enter a valid zipcode.',
+                        params: '^([0-9])+$'
+                    },ZipCode:true,
+                });
+
+                self.selectedState=ko.observable(''),
+                self.selectedCountry=ko.observableArray(''),
+                self.agreeToTermsAndCondFlag = ko.observable(false),
+                self.radioSelectedOptionValue = ko.observable('Male'),
+                self.radioSelectedCourse = ko.observable('');
+                self.hasHobbies = ko.observable(''),
+                self.validationSummary = ko.observable("Complete missing fields below:");
+                
+                self.availableDates = ko.observableArray
+                    ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]),
+                
+                self.availableMonths = ko.observableArray
+                    (["January","February","March","April","May","June","July","August","September","October","November","December"]),
+                
+                self.availableYears = ko.observableArray
+                    ([1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010]),
+
+                self.availableStates = ko.observableArray
+                    (["Delhi","UP","Punjab","MP","Gujrat","Orissa"]),
+                
+                self.availableCountry = ko.observableArray
+                    (["India","US","UK","Europe","Japan"]),
+                
+                self.hasHobbies = ko.observableArray
+                    (["others"]),
+
+                self.engScoreClassX = ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },engScoreClassX:true,
+                    });
+
+                self.hindiScoreClassX =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },hindiScoreClassX:true,
+                    });
+                self.mathsScoreClassX =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },mathsScoreClassX:true,
+                    });
+                self.scienceScoreClassX =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },scienceScoreClassX:true,
+                    });
+                self.socialScoreClassX =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },socialScoreClassX:true,
+                    });
+                self.engScoreClassXII = ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },engScoreClassXII:true,
+                    });
+                self.hindiScoreClassXII =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },hindiScoreClassXII:true,
+                    });
+                self.mathsScoreClassXII =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },mathsScoreClassXII:true,
+                    });
+                self.scienceScoreClassXII =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },scienceScoreClassXII:true,
+                    });
+                self.socialScoreClassXII =  ko.observable().extend({ 
+                    required: true,
+                        maxLength:2,
+                        pattern: {
+                            message: 'This field can only accept numbers. Please enter valid marks.',
+                            params: '^([0-9])+$'
+                        },socialScoreClassXII:true,
+                    });
+                
+                self.editStudent = ko.observable(),
+
+                self.students = ko.observableArray([]) // This will store all the data
+                
+            // saveAndResetStudentData() is Submit function
+            self.saveAndResetStudentData = function () {
+
+                var errors = ko.validation.group(viewstudentModel);
+                console.log('Error',errors());
+                $('#noRecordsToDisplayMsg').hide();
+                $('.displayRecords').show();
+                var studentArray=[];
+                var json1=
+                        {
+                        "firstname":self.FirstName(),
+                        "lastname":self.LastName(),
+                        "dob":self.selectedDate(),
+                        "email":self.email(),
+                        "gender":self.radioSelectedOptionValue(),
+                        "address":self.Address(),
+                        "city":self.City(),
+                        "zipcode":self.Zipcode(),
+                        "state":self.selectedState(),
+                        "country":self.selectedCountry(),
+                        "hobbies":self.hasHobbies = ko.observable(''),
+                        "courseApplied":self.radioSelectedCourse(),                                                                                             
+                        "agreeTerms":self.agreeToTermsAndCondFlag()                                                                                             
+                        }
+
+                    if (errors.length === 0) {
+                        console.log('no errors on page');
+                    }
+                    else {
+                        self.errors.showAllMessages();
+                    }
+
+                   
+                //Storing Data in Local Storage
+                studentArray.push(json1);
+                localStorage.setItem("students",JSON.stringify(studentArray));
+                var studenLocalData = JSON.parse(localStorage.getItem("students"));
+                self.students.push(json1); //observable array
+            }
+
+            self.deleteStudentRecord = function(json1){
+               
+                self.students.removeAll();
+                location.reload();
+            }
+           
+            self.editStudent = function(json1) {  
+                
+                var editedStudentArray=[];
+                
+                self.FirstName(json1.firstname); //over-writing an observable
+                self.LastName(json1.lastname);
+                self.selectedDate(json1.dob);
+                self.email(json1.email);
+                self.radioSelectedOptionValue(json1.gender);
+                self.City(json1.city);
+                self.State(json1.state);
+                self.Country(json1.country);
+                self.Address(json1.address);
+                self.radioSelectedCourse(json1.courseApplied);
+                self.agreeToTermsAndCondFlag(json1.agreeTerms);
+
+                editedStudentArray.push(json1);
+                localStorage.setItem("students",JSON.stringify(editedStudentArray));
+                self.students.removeAll();
+            }
+
+            self.resetRecords = function(){
+                
+                self.FirstName("");
+                self.LastName(""), 
+                self.selectedDate (""),
+                self.selectedMonth (""),
+                self.selectedYear (""),
+                self.email(""),
+                self.Address(""),
+                self.City(""),
+                self.Zipcode(""),
+                self.selectedState(""),
+                self.selectedCountry(""),
+                self.radioSelectedOptionValue(""),
+                self.hasHobbies(""),
+                self.radioSelectedCourse(),
+                self.engScoreClassX(""),
+                self.hindiScoreClassX(""),
+                self.mathsScoreClassX(""),
+                self.scienceScoreClassX(""),
+                self.socialScoreClassX(""),
+                self.engScoreClassXII(""),
+                self.hindiScoreClassXII(""),
+                self.mathsScoreClassXII(""),
+                self.scienceScoreClassXII(""),
+                self.socialScoreClassXII("")
+
+            }
+
+            self.showRecords = function(){
+            
+                console.log(self.length);
+
+                 if(self.length == '0'){
+                   $('#noRecordsToDisplayMsg').show();
+                }else{
+                    console.log('calling of submit button');
+                    saveAndResetStudentData();
+                }  
+            }
+            
+        };
+        ko.applyBindings(viewstudentModel);
+    </script>
+</body>
+</html>
